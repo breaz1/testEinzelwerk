@@ -23,7 +23,7 @@ export default function Header({scrolled }) {
       setConfig(cfg)
     }
     fetcgConfig()
-  })
+  },[])
 
     return (
         <header className={` fixed left-1/2 transform -translate-x-1/2 flex justify-between z-50
