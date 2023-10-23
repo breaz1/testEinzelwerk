@@ -11,11 +11,12 @@ async function getData (lang){
   const responseCfg = await fetch(`https://testapi.einzelwerk.io/api/${lang}/config`);
   return await responseCfg.json();
 }
-export default function Header({scrolled }) {
-
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
   const [config, setConfig ]=useState()
   const router = usePathname(); 
   const lang = router == '/' ? 'en' : 'de';
+
   useEffect(()=>{
     const fetcgConfig = async ()=> {
       const responseCfg = await fetch(`https://testapi.einzelwerk.io/api/${lang}/config`);
@@ -24,6 +25,26 @@ export default function Header({scrolled }) {
     }
     fetcgConfig()
   },[])
+
+  const handleScroll = () => {
+    const firstComponent = document.getElementById("FirstComponentId");
+    if (firstComponent) {
+      const rect = firstComponent.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom >= 0) {
+        setScrolled(false);
+      } else {
+        setScrolled(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
     return (
         <header className={` fixed left-1/2 transform -translate-x-1/2 flex justify-between z-50
